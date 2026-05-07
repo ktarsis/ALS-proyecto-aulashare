@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Editar recurso' if resource else 'Nuevo recurso' }} - AulaShare{% endblock %}
+{% block content %}
+<section class="form-shell wide">
+  <article>
+    <h1>{{ 'Editar recurso' if resource else 'Nuevo recurso' }}</h1>
+    <form method="post">
+      <label>Titulo
+        <input type="text" name="title" value="{{ resource.title if resource else '' }}" minlength="3" required>
+      </label>
+      <label>Descripcion
+        <textarea name="description" rows="5">{{ resource.description if resource else '' }}</textarea>
+      </label>
+      <label>Tipo de recurso
+        <select name="resource_type" required>
+          {% for item in resource_types %}
+            <option value="{{ item }}" {% if resource and resource.resource_type == item %}selected{% endif %}>{{ item }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>URL del recurso
+        <input type="url" name="url" value="{{ resource.url if resource else '' }}" placeholder="https://..." required>
+      </label>
+      <label>Asignatura
+        <select name="subject_id" required>
+          {% for subject in subjects %}
+            <option value="{{ safe_id(subject) }}" {% if resource and resource.subject_id == safe_id(subject) %}selected{% endif %}>{{ subject.name }} ({{ subject.course }})</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button type="submit">Guardar</button>
+    </form>
+  </article>
+</section>
+{% endblock %}

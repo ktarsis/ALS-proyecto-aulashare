@@ -1,0 +1,28 @@
+<section id="rating-box">
+  <article>
+    <header class="section-head no-margin">
+      <h2>Valoracion</h2>
+      <span>{{ average if average is defined else 0 }} / 5</span>
+    </header>
+    <p class="muted">{{ ratings|length }} valoracion(es).</p>
+
+    {% if current_user.is_authenticated %}
+      <form
+        hx-post="{{ url_for('ratings.set_rating', resource_id=safe_id(resource)) }}"
+        hx-target="#rating-box"
+        hx-swap="outerHTML"
+      >
+        <label>Tu puntuacion
+          <select name="score">
+            {% for number in range(1, 6) %}
+              <option value="{{ number }}" {% if user_rating and user_rating.score == number %}selected{% endif %}>{{ number }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <button type="submit">Guardar valoracion</button>
+      </form>
+    {% else %}
+      <p class="muted">Inicia sesion para valorar este recurso.</p>
+    {% endif %}
+  </article>
+</section>

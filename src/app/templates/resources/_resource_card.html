@@ -1,0 +1,17 @@
+{% set subject_obj = load_from_safe(resource.subject_id) %}
+{% set author_obj = load_from_safe(resource.author_id) %}
+<article>
+  <header>
+    <small>{{ resource.resource_type }}</small>
+    <h3><a href="{{ url_for('resources.resource_detail', resource_id=safe_id(resource)) }}">{{ resource.title }}</a></h3>
+  </header>
+  <p>{{ resource.description[:180] }}{% if resource.description|length > 180 %}...{% endif %}</p>
+  <p class="muted">
+    {{ subject_obj.name if subject_obj else 'Asignatura eliminada' }}
+    | {{ author_obj.username if author_obj else 'Autor no disponible' }}
+  </p>
+  <p class="muted">Valoracion media: {{ average_rating_for_resource(resource) }} / 5 | Comentarios: {{ comments_count_for_resource(resource) }}</p>
+  <footer>
+    <a href="{{ resource.url }}" target="_blank" rel="noopener">Abrir enlace</a>
+  </footer>
+</article>

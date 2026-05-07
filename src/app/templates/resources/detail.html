@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}{{ resource.title }} - AulaShare{% endblock %}
+{% block content %}
+{% set subject_obj = load_from_safe(resource.subject_id) %}
+{% set author_obj = load_from_safe(resource.author_id) %}
+<section class="hero-card compact">
+  <div class="detail-top">
+    <div>
+      <p class="eyebrow">{{ resource.resource_type }}</p>
+      <h1>{{ resource.title }}</h1>
+      <p>{{ resource.description or 'Sin descripcion.' }}</p>
+      <p>
+        <strong>Asignatura:</strong>
+        {% if subject_obj %}
+          <a href="{{ url_for('subjects.subject_detail', subject_id=safe_id(subject_obj)) }}">{{ subject_obj.name }}</a>
+        {% else %}
+          Asignatura eliminada
+        {% endif %}
+      </p>
+      <p><strong>Autor:</strong> {{ author_obj.username if author_obj else 'No disponible' }}</p>
+      <p><a href="{{ resource.url }}" target="_blank" rel="noopener" role="button">Abrir recurso</a></p>
+    </div>
+    {% if current_user.is_authenticated and current_user.get_id() == resource.author_id %}
+      <div class="stack-actions">
+        <a href="{{ url_for('resources.edit_resource', resource_id=safe_id(resource)) }}" role="button" class="secondary">Editar</a>
+        <form method="post" action="{{ url_for('resources.delete_resource', resource_id=safe_id(resource)) }}" onsubmit="return confirm('Se eliminara el recurso y todo lo relacionado. Continuar?');">
+          <button type="submit" class="contrast">Borrar</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="detail-grid">
+  <div>
+    {% set average = (ratings|sum(attribute='score') / ratings|length) if ratings else 0 %}
+    {% set user_rating = None %}
+    {% if current_user.is_authenticated %}
+      {% for rating in ratings %}
+        {% if rating.author_id == current_user.get_id() %}
+          {% set user_rating = rating %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% include 'ratings/_rating_box.html' %}
+  </div>
+  <div>
+    {% include 'comments/_comments_section.html' %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Registro - AulaShare{% endblock %}
+{% block content %}
+<section class="form-shell">
+  <article>
+    <h1>Crear cuenta</h1>
+    <form method="post">
+      <label>Nombre de usuario
+        <input type="text" name="username" minlength="3" required>
+      </label>
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+      <label>Contrasena
+        <input type="password" name="password" minlength="4" required>
+      </label>
+      <label>Repite la contrasena
+        <input type="password" name="password2" minlength="4" required>
+      </label>
+      <button type="submit">Crear cuenta</button>
+    </form>
+  </article>
+</section>
+{% endblock %}

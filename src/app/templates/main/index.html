@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Inicio - AulaShare{% endblock %}
+{% block content %}
+<section class="hero-card">
+  <div>
+    <p class="eyebrow">Proyecto ALS</p>
+    <h1>AulaShare</h1>
+    <p>Aplicacion web colaborativa para compartir recursos de estudio por asignatura.</p>
+    <div class="actions-row">
+      <a href="{{ url_for('resources.list_resources') }}" role="button">Ver recursos</a>
+      <a href="{{ url_for('subjects.list_subjects') }}" class="secondary" role="button">Ver asignaturas</a>
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('resources.new_resource') }}" class="contrast" role="button">Publicar recurso</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="stats-grid">
+  <article>
+    <h3>{{ stats.usuarios }}</h3>
+    <p>Usuarios</p>
+  </article>
+  <article>
+    <h3>{{ stats.asignaturas }}</h3>
+    <p>Asignaturas</p>
+  </article>
+  <article>
+    <h3>{{ stats.recursos }}</h3>
+    <p>Recursos</p>
+  </article>
+</section>
+
+<section>
+  <header class="section-head">
+    <h2>Ultimos recursos</h2>
+    <a href="{{ url_for('resources.list_resources') }}">Ver todos</a>
+  </header>
+  {% if resources %}
+    <div class="grid cards-grid">
+      {% for resource in resources %}
+        {% include 'resources/_resource_card.html' %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <article>
+      <p>Aun no hay recursos publicados.</p>
+    </article>
+  {% endif %}
+</section>
+{% endblock %}

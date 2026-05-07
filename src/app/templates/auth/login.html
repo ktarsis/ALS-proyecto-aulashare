@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Entrar - AulaShare{% endblock %}
+{% block content %}
+<section class="form-shell">
+  <article>
+    <h1>Iniciar sesion</h1>
+    <form method="post">
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+      <label>Contrasena
+        <input type="password" name="password" required>
+      </label>
+      <button type="submit">Entrar</button>
+    </form>
+    <p class="muted">No tienes cuenta? <a href="{{ url_for('auth.register') }}">Registrate</a>.</p>
+  </article>
+</section>
+{% endblock %}

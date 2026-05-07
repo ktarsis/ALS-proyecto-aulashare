@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ subject.name }} - AulaShare{% endblock %}
+{% block content %}
+<section class="hero-card compact">
+  <div class="detail-top">
+    <div>
+      <p class="eyebrow">Asignatura</p>
+      <h1>{{ subject.name }}</h1>
+      <p><strong>Grado:</strong> {{ subject.degree }} | <strong>Curso:</strong> {{ subject.course }}</p>
+      <p>{{ subject.description or 'Sin descripcion.' }}</p>
+    </div>
+    {% if current_user.is_authenticated and current_user.get_id() == subject.creator_id %}
+      <div class="stack-actions">
+        <a href="{{ url_for('subjects.edit_subject', subject_id=safe_id(subject)) }}" role="button" class="secondary">Editar</a>
+        <form method="post" action="{{ url_for('subjects.delete_subject', subject_id=safe_id(subject)) }}" onsubmit="return confirm('Se eliminara la asignatura si no tiene recursos asociados. Continuar?');">
+          <button type="submit" class="contrast">Borrar</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section-head">
+  <div>
+    <h2>Recursos asociados</h2>
+    <p class="muted">Material publicado dentro de esta asignatura.</p>
+  </div>
+  {% if current_user.is_authenticated %}
+    <a href="{{ url_for('resources.new_resource') }}" role="button">Nuevo recurso</a>
+  {% endif %}
+</section>
+
+{% if resources %}
+  <div class="grid cards-grid">
+    {% for resource in resources %}
+      {% include 'resources/_resource_card.html' %}
+    {% endfor %}
+  </div>
+{% else %}
+  <article><p>No hay recursos en esta asignatura todavia.</p></article>
+{% endif %}
+{% endblock %}

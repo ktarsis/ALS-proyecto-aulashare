@@ -1,0 +1,17 @@
+<nav class="container">
+  <ul>
+    <li><strong><a href="{{ url_for('main.index') }}">AulaShare</a></strong></li>
+    <li><a href="{{ url_for('subjects.list_subjects') }}">Asignaturas</a></li>
+    <li><a href="{{ url_for('resources.list_resources') }}">Recursos</a></li>
+  </ul>
+  <ul>
+    {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('resources.my_resources') }}">Mis recursos</a></li>
+      <li><span class="muted">{{ current_user.username }}</span></li>
+      <li><a href="{{ url_for('auth.logout') }}">Salir</a></li>
+    {% else %}
+      <li><a href="{{ url_for('auth.login') }}">Entrar</a></li>
+      <li><a href="{{ url_for('auth.register') }}" role="button">Crear cuenta</a></li>
+    {% endif %}
+  </ul>
+</nav>

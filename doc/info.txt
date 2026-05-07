@@ -1,0 +1,14 @@
+Titulo del proyecto: AulaShare
+URL del proyecto: http://127.0.0.1:5000
+Apellidos y nombre: Blanco González Camilo
+DNI: 45158674Z
+Repositorio: https://github.com/ktarsis/ALS-proyecto-aulashare
+Descripcion breve:
+Aplicacion web colaborativa para compartir recursos universitarios por asignatura. Los usuarios registrados pueden crear asignaturas, publicar recursos mediante URL, comentarlos y valorarlos.
+
+Comandos de ejecucion:
+1) python -m venv .venv
+2) source .venv/bin/activate
+3) pip install -r requirements.txt
+4) redis-server &
+5) flask --app run.py run --debug

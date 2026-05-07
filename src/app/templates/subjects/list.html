@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Asignaturas - AulaShare{% endblock %}
+{% block content %}
+<section class="section-head">
+  <div>
+    <h1>Asignaturas</h1>
+    <p class="muted">Organiza recursos por materia, curso y titulacion.</p>
+  </div>
+  {% if current_user.is_authenticated %}
+    <a href="{{ url_for('subjects.new_subject') }}" role="button">Nueva asignatura</a>
+  {% endif %}
+</section>
+
+{% if subjects %}
+  <div class="grid cards-grid">
+    {% for subject in subjects %}
+      <article>
+        <header>
+          <strong><a href="{{ url_for('subjects.subject_detail', subject_id=safe_id(subject)) }}">{{ subject.name }}</a></strong>
+        </header>
+        <p><strong>Grado:</strong> {{ subject.degree }}</p>
+        <p><strong>Curso:</strong> {{ subject.course }}</p>
+        <p>{{ subject.description or 'Sin descripcion.' }}</p>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <article><p>No hay asignaturas creadas todavia.</p></article>
+{% endif %}
+{% endblock %}

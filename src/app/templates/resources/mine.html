@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Mis recursos - AulaShare{% endblock %}
+{% block content %}
+<section class="section-head">
+  <div>
+    <h1>Mis recursos</h1>
+    <p class="muted">Aqui puedes revisar y borrar tus publicaciones.</p>
+  </div>
+  <a href="{{ url_for('resources.new_resource') }}" role="button">Nuevo recurso</a>
+</section>
+
+{% if resources %}
+  <div class="stack-list">
+    {% for resource in resources %}
+      <article hx-target="this" hx-swap="outerHTML">
+        <div class="detail-top">
+          <div>
+            <small>{{ resource.resource_type }}</small>
+            <h3><a href="{{ url_for('resources.resource_detail', resource_id=safe_id(resource)) }}">{{ resource.title }}</a></h3>
+            <p>{{ resource.description }}</p>
+          </div>
+          <div class="stack-actions">
+            <a href="{{ url_for('resources.edit_resource', resource_id=safe_id(resource)) }}" role="button" class="secondary">Editar</a>
+            <button
+              class="contrast"
+              hx-post="{{ url_for('resources.delete_inline', resource_id=safe_id(resource)) }}"
+              hx-confirm="Se eliminara el recurso junto con sus comentarios y valoraciones. Continuar?"
+            >Borrar</button>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <article><p>Todavia no has publicado recursos.</p></article>
+{% endif %}
+{% endblock %}
